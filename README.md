@@ -62,7 +62,7 @@ Learn Data Science is based on content developed by me (Nitin Borwankar) for the
 Most of the content (circa July 2013) is copyright (c) Alpine Data Labs as per the license at opendst.org, and is freely available.
 Extensions to the content embodied in this projects content are also released under the same license - see the LICENSE.txt file.
 
-IPython Notebooks at beta (these are (c) Alpine Datalabs and are freely available)
+IPython Notebooks at beta 
 --------------------------
 * A0. How to use this content.ipynb
 * A1. Linear Regression - Overview.ipynb
