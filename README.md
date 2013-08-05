@@ -1,5 +1,3 @@
-Learn Data Science
-==================
 
 Who
 ---

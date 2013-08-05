@@ -1,4 +1,3 @@
-
 Portions of the content and code are subject to the following
 -------------------------------------------------------------
 Copyright (c) 2013, Alpine Data Labs  
@@ -39,5 +38,6 @@ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ============
 
-Informally what this means is this material is derived from original material (see opendst.org) copyright Alpine Datalabs released under a BSD license and the derivative work copyright Nitin Borwankar, is also released under the same license. 
+Informally what this means is this material is derived from original material (see opendst.org) copyright Alpine Datalabs  
+released under a BSD license and the derivative work copyright Nitin Borwankar, is also released under the same license. 
 Users should not have to care about the two copyright holders as far as use rights are concerned. Use away! 
