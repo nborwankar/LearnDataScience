@@ -62,8 +62,7 @@ Extensions to the content embodied in this projects content are also released un
 IPython Notebooks at Beta.  
 --------------------------  
 
-* [A0. Before you begin](http://nbviewer.ipython.org/urls/raw.github.com/nborwankar/LearnDataScience/master/notebooks/A0.%20Before%20you%20begin.ipynb)
-* [A0. How to use this content](http://nbviewer.ipython.org/urls/raw.github.com/nborwankar/LearnDataScience/master/notebooks/A0.%20How%20to%20use%20this%20content.ipynb)
+* [A0. Before You Begin](http://nbviewer.ipython.org/urls/raw.github.com/nborwankar/LearnDataScience/master/notebooks/A0.%20Before%20You%20Begin.ipynb)
 * [A1. Linear Regression - Overview](http://nbviewer.ipython.org/urls/raw.github.com/nborwankar/LearnDataScience/master/notebooks/A1.%20Linear%20Regression%20-%20Overview.ipynb)
 * [A2. Linear Regression - Data Exploration - Lending Club](http://nbviewer.ipython.org/urls/raw.github.com/nborwankar/LearnDataScience/master/notebooks/A2.%20Linear%20Regression%20-%20Data%20Exploration%20-%20Lending%20Club.ipynb)
 * [A3. Linear Regression - Analysis](http://nbviewer.ipython.org/urls/raw.github.com/nborwankar/LearnDataScience/master/notebooks/A3.%20Linear%20Regression%20-%20Analysis.ipynb)
