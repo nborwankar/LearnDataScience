@@ -99,13 +99,12 @@ Installation
 ------------
 
 * Prerequisites  
-One of the following distributions is needed.
+One of the following distributions is needed. Please note that even if you have Python installed it is important to have one of these distributions installed and the binary for this installation in your path. This is because these distributions come packaged with all the supplementary libraries needed and these have been historically difficult to install separately.
 
   * EPD Free Enthought Python Distribution from http://enthought.com
   * Anaconda Python from http://continuum.io
   * Development has been done on v 1.5 of Anaconda distribution but EPD Free should work just as well.
 
-Please note that even if you have Python installed it is important to have one of these distributions installed and the binary for this installation in your path. This is because these distributions come packaged with all the supplementary libraries needed and these have been historically difficult to install separately.
 
 The following steps assume you have installed one of the distributions mentioned in prerequisites.
 
@@ -115,7 +114,7 @@ The following steps assume you have installed one of the distributions mentioned
   * cd to the 'notebooks' subdirectory
   * start IPython Notebook 'ipython notebook --pylab=inline'
  
-From the git repo
+* From the git repo
   * clone the repo
   * cd to 'notebooks'
   * start IPython Notebook 'ipython notebook --pylab=inline'
