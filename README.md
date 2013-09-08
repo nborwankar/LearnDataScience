@@ -89,11 +89,14 @@ IPython Notebooks at Beta.
 * [Z1. Appendix 1 Plotting code snippets ](http://nbviewer.ipython.org/urls/raw.github.com/nborwankar/LearnDataScience/master/notebooks/Z1.%20Appendix%201%20Plotting%20code%20snippets%20.ipynb)
 
 
+Background  
+----------
+
+If you are unfamiliar with IPython Notebook you can start with http://ipython.org/notebook
+
+
 Installation  
 ------------
-
-* Background  
-If you are unfamiliar with IPython Notebook you can start with http://ipython.org/notebook
 
 * Prerequisites  
 One of the following distributions is needed.
