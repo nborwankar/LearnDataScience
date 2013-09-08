@@ -87,3 +87,29 @@ IPython Notebooks at Beta.
 * [WD3. K-Means Clustering Analysis - Worksheet](http://nbviewer.ipython.org/urls/raw.github.com/nborwankar/LearnDataScience/master/notebooks/WD3.%20K-Means%20Clustering%20Analysis%20-%20Worksheet.ipynb)
 * [Z0. A quick tour of the IPython notebook](http://nbviewer.ipython.org/urls/raw.github.com/nborwankar/LearnDataScience/master/notebooks/Z0.%20A%20quick%20tour%20of%20the%20IPython%20notebook.ipynb)
 * [Z1. Appendix 1 Plotting code snippets ](http://nbviewer.ipython.org/urls/raw.github.com/nborwankar/LearnDataScience/master/notebooks/Z1.%20Appendix%201%20Plotting%20code%20snippets%20.ipynb)
+
+* Background  
+If you are unfamiliar with IPython Notebook you can start with http://ipython.org/notebook
+
+* Prerequisites  
+One of the following distributions is needed.
+
+  * EPD Free Enthought Python Distribution from http://enthought.com
+  * Anaconda Python from http://continuum.io
+  * Development has been done on v 1.5 of Anaconda distribution but EPD Free should work just as well.
+
+Please note that even if you have Python installed it is important to have one of these distributions installed and the binary for this installation in your path. This is because these distributions come packaged with all the supplementary libraries needed and these have been historically difficult to install separately.
+
+* Installation  
+These steps assume you have installed one of the distributions mentioned in prerequisites.
+
+From a zip or tar file
+* download the zip or tar file 
+* unpack the file to a directory called learnds
+* cd to the 'notebooks' subdirectory
+* start IPython Notebook 'ipython notebook --pylab=inline'
+ 
+From the git repo
+* clone the repo
+* cd to 'notebooks'
+* start IPython Notebook 'ipython notebook --pylab=inline'
