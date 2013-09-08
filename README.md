@@ -1,4 +1,3 @@
-
 Who
 ---
 
@@ -79,12 +78,11 @@ IPython Notebooks at Beta.
 * [WA1. Linear Regression Overview Worksheet](http://nbviewer.ipython.org/urls/raw.github.com/nborwankar/LearnDataScience/master/notebooks/WA1.%20Linear%20Regression%20Overview%20Worksheet.ipynb)
 * [WA2. Linear Regression - Data Exploration - Lending Club Worksheet](http://nbviewer.ipython.org/urls/raw.github.com/nborwankar/LearnDataScience/master/notebooks/WA2.%20Linear%20Regression%20-%20Data%20Exploration%20-%20Lending%20Club%20Worksheet.ipynb)
 * [WA3. Linear Regression - Analysis Worksheet](http://nbviewer.ipython.org/urls/raw.github.com/nborwankar/LearnDataScience/master/notebooks/WA3.%20Linear%20Regression%20-%20Analysis%20Worksheet.ipynb)
+* [WA4. Linear Regression - Data Cleanup Worksheet](http://nbviewer.ipython.org/urls/raw.github.com/nborwankar/LearnDataScience/master/notebooks/WA4.%20Linear%20Regression%20-%20Data%20Cleanup.ipynb)
 * [WB3. Logistic Regression - Analysis- Worksheet](http://nbviewer.ipython.org/urls/raw.github.com/nborwankar/LearnDataScience/master/notebooks/WB3.%20Logistic%20Regression%20-%20Analysis-%20Worksheet.ipynb)
 * [WC3. Random Forests - Analysis - Worksheet](http://nbviewer.ipython.org/urls/raw.github.com/nborwankar/LearnDataScience/master/notebooks/WC3.%20Random%20Forests%20-%20Analysis%20-%20Worksheet.ipynb)
+* [WC4. Random Forests - Data Cleanup Worksheet](http://nbviewer.ipython.org/urls/raw.github.com/nborwankar/LearnDataScience/master/notebooks/WC4.%20Random%20Forests%20-%20Data%20Cleanup.ipynb)
 * [WD2. K-Means Clustering - Data Exploration-Worksheet](http://nbviewer.ipython.org/urls/raw.github.com/nborwankar/LearnDataScience/master/notebooks/WD2.%20K-Means%20Clustering%20-%20Data%20Exploration-Worksheet.ipynb)
 * [WD3. K-Means Clustering Analysis - Worksheet](http://nbviewer.ipython.org/urls/raw.github.com/nborwankar/LearnDataScience/master/notebooks/WD3.%20K-Means%20Clustering%20Analysis%20-%20Worksheet.ipynb)
 * [Z0. A quick tour of the IPython notebook](http://nbviewer.ipython.org/urls/raw.github.com/nborwankar/LearnDataScience/master/notebooks/Z0.%20A%20quick%20tour%20of%20the%20IPython%20notebook.ipynb)
 * [Z1. Appendix 1 Plotting code snippets ](http://nbviewer.ipython.org/urls/raw.github.com/nborwankar/LearnDataScience/master/notebooks/Z1.%20Appendix%201%20Plotting%20code%20snippets%20.ipynb)
-
-
-
