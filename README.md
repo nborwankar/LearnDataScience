@@ -1,7 +1,8 @@
 Who
 ---
 
-* Nitin Borwankar http://twitter.com/nitin - primary developer
+* Nitin Borwankar http://twitter.com/nitin - primary developer  
+(Sponsored by Pivotal Labs and Alpine Data Labs).
 
 
 What
