@@ -105,16 +105,15 @@ One of the following distributions is needed. Please note that even if you have 
   * Anaconda Python from http://continuum.io
   * Development has been done on v 1.5 of Anaconda distribution but EPD Free should work just as well.
 
-
 * The following steps assume you have installed one of the distributions mentioned in prerequisites.
 
-  * From a zip or tar file
+* From a zip or tar file
     * download the zip or tar file 
     * unpack the file to a directory called learnds
     * cd to the 'notebooks' subdirectory
     * start IPython Notebook 'ipython notebook --pylab=inline'
  
-  * From the git repo
+* From the git repo
     * clone the repo
     * cd to 'notebooks'
     * start IPython Notebook 'ipython notebook --pylab=inline'
