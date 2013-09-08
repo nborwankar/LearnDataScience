@@ -103,13 +103,13 @@ Please note that even if you have Python installed it is important to have one o
 * Installation  
 These steps assume you have installed one of the distributions mentioned in prerequisites.
 
-From a zip or tar file
-* download the zip or tar file 
-* unpack the file to a directory called learnds
-* cd to the 'notebooks' subdirectory
-* start IPython Notebook 'ipython notebook --pylab=inline'
+* From a zip or tar file
+  * download the zip or tar file 
+  * unpack the file to a directory called learnds
+  * cd to the 'notebooks' subdirectory
+  * start IPython Notebook 'ipython notebook --pylab=inline'
  
 From the git repo
-* clone the repo
-* cd to 'notebooks'
-* start IPython Notebook 'ipython notebook --pylab=inline'
+  * clone the repo
+  * cd to 'notebooks'
+  * start IPython Notebook 'ipython notebook --pylab=inline'
