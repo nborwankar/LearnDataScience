@@ -1,7 +1,7 @@
 Who
 ---
 
-* Nitin Borwankar http://twitter.com/nitin - primary developer  
+* Nitin Borwankar http://twitter.com/nitin - primary developer
 (Sponsored by Pivotal Labs and Alpine Data Labs).
 
 
@@ -27,9 +27,9 @@ Each of the above has at least three IPython Notebooks covering
 One or more of these may have supplementary material.
 Each of these have worksheets that contain mostly the code sections so you can iteratively explore the code.
 
-Three openly available data sets are used.  
+Three openly available data sets are used.
 
-* For the Linear and Logistic Regression we use a data set on loans and interest rates provided by Learning Club http://learningclub.com  
+* For the Linear and Logistic Regression we use a data set on loans and interest rates provided by Learning Club http://learningclub.com
 * For Random Forests we use a data set of Android accelerometer and gyroscope readings used to predict body position and motion from the Human Activity Recognition project
 http://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones
 * UN data on economic indicators of countries
@@ -50,7 +50,7 @@ Starting in 2013 and intended to extend for a long while.
 Where
 -----
 
-Today github, tomorrow the world. 
+Today github, tomorrow the world.
 
 How
 ---
@@ -59,8 +59,8 @@ Learn Data Science is based on content developed by me (Nitin Borwankar) for the
 Most of the content (circa July 2013) is copyright (c) Alpine Data Labs as per the license at opendst.org, and is freely available.
 Extensions to the content embodied in this projects content are also released under the same license - see the LICENSE.txt file.
 
-IPython Notebooks at Beta.  
---------------------------  
+IPython Notebooks at Beta.
+--------------------------
 
 * [A0. Before You Begin](http://nbviewer.ipython.org/urls/raw.github.com/nborwankar/LearnDataScience/master/notebooks/A0.%20Before%20You%20Begin.ipynb)
 * [A1. Linear Regression - Overview](http://nbviewer.ipython.org/urls/raw.github.com/nborwankar/LearnDataScience/master/notebooks/A1.%20Linear%20Regression%20-%20Overview.ipynb)
@@ -89,16 +89,16 @@ IPython Notebooks at Beta.
 * [Z1. Appendix 1 Plotting code snippets ](http://nbviewer.ipython.org/urls/raw.github.com/nborwankar/LearnDataScience/master/notebooks/Z1.%20Appendix%201%20Plotting%20code%20snippets%20.ipynb)
 
 
-Background  
+Background
 ----------
 
 If you are unfamiliar with IPython Notebook you can start with http://ipython.org/notebook
 
 
-Installation  
+Installation
 ------------
 
-* Prerequisites  
+* Prerequisites
 One of the following distributions is needed. Please note that even if you have Python installed it is important to have one of these distributions installed and the binary for this installation in your path. This is because these distributions come packaged with all the supplementary libraries needed and these have been historically difficult to install separately.
 
   * EPD Free Enthought Python Distribution from http://enthought.com
@@ -108,12 +108,14 @@ One of the following distributions is needed. Please note that even if you have 
 * The following steps assume you have installed one of the distributions mentioned in prerequisites.
 
 * From a zip or tar file
-    * download the zip or tar file 
-    * unpack the file to a directory called learnds
-    * cd to the 'notebooks' subdirectory
-    * start IPython Notebook 'ipython notebook --pylab=inline'
- 
+    * Download the zip or tar file
+    * Unpack the file to a directory called learnds
+    * Cd to the 'notebooks' subdirectory
+    * Start IPython Notebook 'ipython notebook --pylab=inline'
+
 * From the git repo
-    * clone the repo
-    * cd to 'notebooks'
-    * start IPython Notebook 'ipython notebook --pylab=inline'
+    * Clone the repo: `git clone https://github.com/nborwankar/LearnDataScience`
+    * Cd to 'notebooks'
+    * Create a virtualenv: `mkvirtualenv LearnDataScience`
+    * Install requirements: `pip install -r requirements.txt`
+    * Start IPython Notebook: 'ipython notebook --pylab=inline'
