@@ -2,7 +2,7 @@ Who
 ---
 
 * [Nitin Borwankar](http://twitter.com/nitin) - primary developer  
-Sponsored by [Pivotal Inc.](http://gopivotal.com) and [Alpine Data Labs](http://alpinedatalabs.com)
+Sponsored by [Pivotal Inc.](http://gopivotal.com) and [Alpine Data Labs](http://alpinedatalabs.com)  
 Community forming at [Google Group "learnds"](https://groups.google.com/forum/#!forum/learnds)
 
 What
