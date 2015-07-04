@@ -1,0 +1,242 @@
+{
+ "metadata": {
+  "name": "B1. Logistic Regression - Overview"
+ },
+ "nbformat": 3,
+ "nbformat_minor": 0,
+ "worksheets": [
+  {
+   "cells": [
+    {
+     "cell_type": "markdown",
+     "metadata": {},
+     "source": [
+      "Logistic Regression - Overview\n",
+      "===========\n",
+      "***\n",
+      "\n",
+      "###What are the odds that an event will happen? Answering yes/no questions.\n",
+      "\n",
+      "Often we have to resolve questions with binary or yes/no outcomes.\n",
+      "\n",
+      "For example:\n",
+      "\n",
+      "* _Does a patient have cancer?_\n",
+      "\n",
+      "* _Will a team win the next game?_\n",
+      "\n",
+      "* _Will the customer buy my product?_\n",
+      "\n",
+      "* _Will I get the loan?_\n",
+      "\n",
+      "\n",
+      "\n"
+     ]
+    },
+    {
+     "cell_type": "markdown",
+     "metadata": {},
+     "source": [
+      "##A familiar example\n",
+      "\n",
+      "We are going to start by plotting something we understand in the real world, although we may never actually have plotted it before.\n",
+      "Let's say on the x-axis is the number of goals scored by an NFL team over a season and say the outcome on the y-axis is whether they lost or won the game indicated by a value of 0 or 1 respectively.  \n",
+      "\n",
+      "Then a plot for these scores might look like this:"
+     ]
+    },
+    {
+     "cell_type": "markdown",
+     "metadata": {},
+     "source": [
+      "<image src=\"files/images/b1fig1_nfloutcomes.png\" />"
+     ]
+    },
+    {
+     "cell_type": "markdown",
+     "metadata": {},
+     "source": [
+      "So, how do we predict whether we have a win or a loss if we are given a score?  \n",
+      "Clearly linear regression is not a good model.  \n",
+      "Take a look at this plot of a \"best fit\" line over the points:"
+     ]
+    },
+    {
+     "cell_type": "markdown",
+     "metadata": {},
+     "source": [
+      "<image src=\"files/images/b1fig2_nfloutcomes_withline.png\" />"
+     ]
+    },
+    {
+     "cell_type": "markdown",
+     "metadata": {},
+     "source": [
+      "### How do we model this sort of data best?\n",
+      "\n",
+      "We need a better way to model our data.  \n",
+      "We are going to do this in two steps.\n",
+      "\n",
+      "First, we will just pull a function out of the data science bag of tricks and show that it works reasonably well.\n",
+      "\n",
+      "And, second, we are going to understand how we came up with that function and how it is related to binary outcomes and odds.\n",
+      "But before that let's understand this a bit better.\n",
+      "\n",
+      "This function will need to have a value of 0 for the loss scores and 1 for the win scores.\n",
+      "To make sense it will need to be 0 for some score and all scores below it and be 1 for some other score and all scores above it. And it will need to smoothly increase from 0 to 1 in the intermediate range.\n",
+      "\n",
+      "It will need to look something like this:\n",
+      "\n",
+      "<image src=\"files/images/standardSigmoidFunction.png\" />"
+     ]
+    },
+    {
+     "cell_type": "markdown",
+     "metadata": {},
+     "source": [
+      "### Now for a spot of Math\n",
+      "\n",
+      "A function that has the above shape is:\n",
+      "\n",
+      "$$P(x) = \\frac{1}{1 + e^{b_0 + b_1x}}$$\n",
+      "\n",
+      "where P(x) is the probability of a score of x leading to a win.  \n",
+      "$b_0, b_1$ are parameters that we will estimate, so the curve fits our data.\n",
+      "\n",
+      "\n",
+      "Notice that we have a familiar looking linear function,  \n",
+      "$$b_0 + b_1x$$  \n",
+      "but it's plugged into a formula that generates the shape we want.  \n",
+      "\n",
+      "So how does this formula predict Yes/No outcomes and why this function of all functions?  \n",
+      "\n",
+      "\n",
+      "### First the \"How\".  \n",
+      "\n",
+      "From the shape we can see that that if Score was less than 20 then P(x) would predict a loss, if Score was greater than 30, P(x) would predict a win. But in the middle things would be somewhat fuzzy - we would have even odds when the score was around 25.\n",
+      "\n",
+      "So this sort of function is what we use to model binary outcomes."
+     ]
+    },
+    {
+     "cell_type": "markdown",
+     "metadata": {},
+     "source": [
+      "### Now the \"Why\". \n",
+      "\n",
+      "So why this particular function and how did we derive it as a way to model binary outcomes?\n",
+      "We'll defer the gory details the next section on \"Odds, Log Odds and the Logit Function\", and it will be optional reading.\n",
+      "\n",
+      "We need to take a real data set and do some exploration with it.  Then we'll do some analysis, as before.\n",
+      "\n",
+      "We're going to take the same dataset we used earlier, the Lending Club dataset, but this time we're going to ask a yes/no question:-  \n",
+      "\n",
+      "__Will I get the loan I want at a favorable interest rate?__\n"
+     ]
+    },
+    {
+     "cell_type": "markdown",
+     "metadata": {},
+     "source": [
+      "---\n"
+     ]
+    },
+    {
+     "cell_type": "code",
+     "collapsed": false,
+     "input": [
+      "from IPython.core.display import HTML\n",
+      "def css_styling():\n",
+      "    styles = open(\"../styles/custom.css\", \"r\").read()\n",
+      "    return HTML(styles)\n",
+      "css_styling()"
+     ],
+     "language": "python",
+     "metadata": {},
+     "outputs": [
+      {
+       "html": [
+        "<style>\n",
+        "    @font-face {\n",
+        "        font-family: \"Computer Modern\";\n",
+        "        src: url('http://mirrors.ctan.org/fonts/cm-unicode/fonts/otf/cmunss.otf');\n",
+        "    }\n",
+        "    div.cell{\n",
+        "        width:800px;\n",
+        "        margin-left:auto;\n",
+        "        margin-right:auto;\n",
+        "    }\n",
+        "    h1 {\n",
+        "        font-family: \"Charis SIL\", Palatino, serif;\n",
+        "    }\n",
+        "    h4{\n",
+        "        margin-top:12px;\n",
+        "        margin-bottom: 3px;\n",
+        "       }\n",
+        "    div.text_cell_render{\n",
+        "        font-family: Computer Modern, \"Helvetica Neue\", Arial, Helvetica, Geneva, sans-serif;\n",
+        "        line-height: 145%;\n",
+        "        font-size: 120%;\n",
+        "        width:800px;\n",
+        "        margin-left:auto;\n",
+        "        margin-right:auto;\n",
+        "    }\n",
+        "    .CodeMirror{\n",
+        "            font-family: \"Source Code Pro\", source-code-pro,Consolas, monospace;\n",
+        "    }\n",
+        "    .prompt{\n",
+        "        display: None;\n",
+        "    }\n",
+        "    .text_cell_render h5 {\n",
+        "        font-weight: 300;\n",
+        "        font-size: 16pt;\n",
+        "        color: #4057A1;\n",
+        "        font-style: italic;\n",
+        "        margin-bottom: .5em;\n",
+        "        margin-top: 0.5em;\n",
+        "        display: block;\n",
+        "    }\n",
+        "    \n",
+        "    .warning{\n",
+        "        color: rgb( 240, 20, 20 )\n",
+        "        }\n",
+        "</style>\n",
+        "<script>\n",
+        "    MathJax.Hub.Config({\n",
+        "                        TeX: {\n",
+        "                           extensions: [\"AMSmath.js\"]\n",
+        "                           },\n",
+        "                tex2jax: {\n",
+        "                    inlineMath: [ ['$','$'], [\"\\\\(\",\"\\\\)\"] ],\n",
+        "                    displayMath: [ ['$$','$$'], [\"\\\\[\",\"\\\\]\"] ]\n",
+        "                },\n",
+        "                displayAlign: 'center', // Change this to 'center' to center equations.\n",
+        "                \"HTML-CSS\": {\n",
+        "                    styles: {'.MathJax_Display': {\"margin\": 4}}\n",
+        "                }\n",
+        "        });\n",
+        "</script>"
+       ],
+       "output_type": "pyout",
+       "prompt_number": 3,
+       "text": [
+        "<IPython.core.display.HTML at 0x109391790>"
+       ]
+      }
+     ],
+     "prompt_number": 3
+    },
+    {
+     "cell_type": "code",
+     "collapsed": false,
+     "input": [],
+     "language": "python",
+     "metadata": {},
+     "outputs": [],
+     "prompt_number": 3
+    }
+   ],
+   "metadata": {}
+  }
+ ]
+}

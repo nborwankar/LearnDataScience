@@ -1,0 +1,760 @@
+{
+ "metadata": {
+  "name": "B3. Logistic Regression - Analysis"
+ },
+ "nbformat": 3,
+ "nbformat_minor": 0,
+ "worksheets": [
+  {
+   "cells": [
+    {
+     "cell_type": "markdown",
+     "metadata": {},
+     "source": [
+      "Logistic Regression - Analysis\n",
+      "==============================\n",
+      "***"
+     ]
+    },
+    {
+     "cell_type": "markdown",
+     "metadata": {},
+     "source": [
+      "###Introduction\n",
+      "\n",
+      "We're going to look at the same data set from Lending Club but ask a different question.  One that has a binary outcome.  \n",
+      "\n",
+      "Let's assume we have a FICO Score of 720 and we want to borrow 10,000 dollars.\n",
+      "We would like to get an Interest Rate less that 12 per cent.\n",
+      "\n",
+      "The question we pose is: \n",
+      "\n",
+      "##### _Can we get a loan, from the Lending Club, of 10,000 dollars at 12 per cent or less, with a FICO Score of 720?_"
+     ]
+    },
+    {
+     "cell_type": "markdown",
+     "metadata": {},
+     "source": [
+      "###Methods\n",
+      "\n",
+      "How do we use Logistic Regression here?  Let's recast the problem as follows:-\n",
+      "\n",
+      "#####_What is the probability of getting a Loan, from the Lending Club, of 10,000 dollars at 12 per cent or less with a FICO Score of 720?_  \n",
+      "\n",
+      "Then let us decide that if we get a probability of less than 0.67 we say it means we won't get the loan and if it is greater than 0.67 we will. I.e. we are not confident until we have a 2/3 chance of getting it.\n",
+      "\n",
+      "In reality we can set the threshold higher, say 0.8, if we want to be \"more certain\" that it will happen, but for this exercise we'll just say 0.67.\n"
+     ]
+    },
+    {
+     "cell_type": "markdown",
+     "metadata": {},
+     "source": [
+      "From initial discussion we say we want to start with a model of the form\n",
+      "\n",
+      "$Interest Rate = a_0 + a_1*FICOScore + a_2*LoanAmount$\n",
+      "\n",
+      "And the derive a second equation of the form:\n",
+      "\n",
+      "Z = Prob (InterestRate less than 12 percent).\n",
+      "\n",
+      "We apply this to the existing dataset and create a Logistic Regression Model using modeling software."
+     ]
+    },
+    {
+     "cell_type": "markdown",
+     "metadata": {},
+     "source": [
+      "### Results\n",
+      "\n",
+      "As with the Linear Regression Model, we use the cleaned up Lending Club data set as input."
+     ]
+    },
+    {
+     "cell_type": "code",
+     "collapsed": false,
+     "input": [
+      "import pandas as pd\n",
+      "dfr = pd.read_csv('../datasets/loanf.csv')\n",
+      "# inspect, sanity check\n",
+      "dfr.head()"
+     ],
+     "language": "python",
+     "metadata": {},
+     "outputs": [
+      {
+       "html": [
+        "<div style=\"max-height:1000px;max-width:1500px;overflow:auto;\">\n",
+        "<table border=\"1\" class=\"dataframe\">\n",
+        "  <thead>\n",
+        "    <tr style=\"text-align: right;\">\n",
+        "      <th></th>\n",
+        "      <th>Interest.Rate</th>\n",
+        "      <th>FICO.Score</th>\n",
+        "      <th>Loan.Length</th>\n",
+        "      <th>Monthly.Income</th>\n",
+        "      <th>Loan.Amount</th>\n",
+        "    </tr>\n",
+        "  </thead>\n",
+        "  <tbody>\n",
+        "    <tr>\n",
+        "      <th>6 </th>\n",
+        "      <td> 15.31</td>\n",
+        "      <td> 670</td>\n",
+        "      <td> 36</td>\n",
+        "      <td>  4891.67</td>\n",
+        "      <td>  6000</td>\n",
+        "    </tr>\n",
+        "    <tr>\n",
+        "      <th>11</th>\n",
+        "      <td> 19.72</td>\n",
+        "      <td> 670</td>\n",
+        "      <td> 36</td>\n",
+        "      <td>  3575.00</td>\n",
+        "      <td>  2000</td>\n",
+        "    </tr>\n",
+        "    <tr>\n",
+        "      <th>12</th>\n",
+        "      <td> 14.27</td>\n",
+        "      <td> 665</td>\n",
+        "      <td> 36</td>\n",
+        "      <td>  4250.00</td>\n",
+        "      <td> 10625</td>\n",
+        "    </tr>\n",
+        "    <tr>\n",
+        "      <th>13</th>\n",
+        "      <td> 21.67</td>\n",
+        "      <td> 670</td>\n",
+        "      <td> 60</td>\n",
+        "      <td> 14166.67</td>\n",
+        "      <td> 28000</td>\n",
+        "    </tr>\n",
+        "    <tr>\n",
+        "      <th>21</th>\n",
+        "      <td> 21.98</td>\n",
+        "      <td> 665</td>\n",
+        "      <td> 36</td>\n",
+        "      <td>  6666.67</td>\n",
+        "      <td> 22000</td>\n",
+        "    </tr>\n",
+        "  </tbody>\n",
+        "</table>\n",
+        "</div>"
+       ],
+       "output_type": "pyout",
+       "prompt_number": 9,
+       "text": [
+        "    Interest.Rate  FICO.Score  Loan.Length  Monthly.Income  Loan.Amount\n",
+        "6           15.31         670           36         4891.67         6000\n",
+        "11          19.72         670           36         3575.00         2000\n",
+        "12          14.27         665           36         4250.00        10625\n",
+        "13          21.67         670           60        14166.67        28000\n",
+        "21          21.98         665           36         6666.67        22000"
+       ]
+      }
+     ],
+     "prompt_number": 9
+    },
+    {
+     "cell_type": "code",
+     "collapsed": false,
+     "input": [
+      "# we add a column which indicates (True/False) whether the interest rate is <= 12 \n",
+      "dfr['TF']=dfr['Interest.Rate']<=12\n",
+      "# inspect again\n",
+      "dfr.head()\n",
+      "# we see that the TF values are False as Interest.Rate is higher than 12 in all these cases"
+     ],
+     "language": "python",
+     "metadata": {},
+     "outputs": [
+      {
+       "html": [
+        "<div style=\"max-height:1000px;max-width:1500px;overflow:auto;\">\n",
+        "<table border=\"1\" class=\"dataframe\">\n",
+        "  <thead>\n",
+        "    <tr style=\"text-align: right;\">\n",
+        "      <th></th>\n",
+        "      <th>Interest.Rate</th>\n",
+        "      <th>FICO.Score</th>\n",
+        "      <th>Loan.Length</th>\n",
+        "      <th>Monthly.Income</th>\n",
+        "      <th>Loan.Amount</th>\n",
+        "      <th>TF</th>\n",
+        "    </tr>\n",
+        "  </thead>\n",
+        "  <tbody>\n",
+        "    <tr>\n",
+        "      <th>6 </th>\n",
+        "      <td> 15.31</td>\n",
+        "      <td> 670</td>\n",
+        "      <td> 36</td>\n",
+        "      <td>  4891.67</td>\n",
+        "      <td>  6000</td>\n",
+        "      <td> False</td>\n",
+        "    </tr>\n",
+        "    <tr>\n",
+        "      <th>11</th>\n",
+        "      <td> 19.72</td>\n",
+        "      <td> 670</td>\n",
+        "      <td> 36</td>\n",
+        "      <td>  3575.00</td>\n",
+        "      <td>  2000</td>\n",
+        "      <td> False</td>\n",
+        "    </tr>\n",
+        "    <tr>\n",
+        "      <th>12</th>\n",
+        "      <td> 14.27</td>\n",
+        "      <td> 665</td>\n",
+        "      <td> 36</td>\n",
+        "      <td>  4250.00</td>\n",
+        "      <td> 10625</td>\n",
+        "      <td> False</td>\n",
+        "    </tr>\n",
+        "    <tr>\n",
+        "      <th>13</th>\n",
+        "      <td> 21.67</td>\n",
+        "      <td> 670</td>\n",
+        "      <td> 60</td>\n",
+        "      <td> 14166.67</td>\n",
+        "      <td> 28000</td>\n",
+        "      <td> False</td>\n",
+        "    </tr>\n",
+        "    <tr>\n",
+        "      <th>21</th>\n",
+        "      <td> 21.98</td>\n",
+        "      <td> 665</td>\n",
+        "      <td> 36</td>\n",
+        "      <td>  6666.67</td>\n",
+        "      <td> 22000</td>\n",
+        "      <td> False</td>\n",
+        "    </tr>\n",
+        "  </tbody>\n",
+        "</table>\n",
+        "</div>"
+       ],
+       "output_type": "pyout",
+       "prompt_number": 10,
+       "text": [
+        "    Interest.Rate  FICO.Score  Loan.Length  Monthly.Income  Loan.Amount     TF\n",
+        "6           15.31         670           36         4891.67         6000  False\n",
+        "11          19.72         670           36         3575.00         2000  False\n",
+        "12          14.27         665           36         4250.00        10625  False\n",
+        "13          21.67         670           60        14166.67        28000  False\n",
+        "21          21.98         665           36         6666.67        22000  False"
+       ]
+      }
+     ],
+     "prompt_number": 10
+    },
+    {
+     "cell_type": "code",
+     "collapsed": false,
+     "input": [
+      "# now we check the rows that have interest rate == 10 (just some number < 12)\n",
+      "# this is just to confirm that the TF value is True where we expect it to be\n",
+      "d = dfr[dfr['Interest.Rate']==10]\n",
+      "d.head()\n",
+      "# all is well"
+     ],
+     "language": "python",
+     "metadata": {},
+     "outputs": [
+      {
+       "html": [
+        "<div style=\"max-height:1000px;max-width:1500px;overflow:auto;\">\n",
+        "<table border=\"1\" class=\"dataframe\">\n",
+        "  <thead>\n",
+        "    <tr style=\"text-align: right;\">\n",
+        "      <th></th>\n",
+        "      <th>Interest.Rate</th>\n",
+        "      <th>FICO.Score</th>\n",
+        "      <th>Loan.Length</th>\n",
+        "      <th>Monthly.Income</th>\n",
+        "      <th>Loan.Amount</th>\n",
+        "      <th>TF</th>\n",
+        "    </tr>\n",
+        "  </thead>\n",
+        "  <tbody>\n",
+        "    <tr>\n",
+        "      <th>650 </th>\n",
+        "      <td> 10</td>\n",
+        "      <td> 700</td>\n",
+        "      <td> 36</td>\n",
+        "      <td>  3250.00</td>\n",
+        "      <td>  2800</td>\n",
+        "      <td> True</td>\n",
+        "    </tr>\n",
+        "    <tr>\n",
+        "      <th>204 </th>\n",
+        "      <td> 10</td>\n",
+        "      <td> 715</td>\n",
+        "      <td> 36</td>\n",
+        "      <td> 15416.67</td>\n",
+        "      <td>  6000</td>\n",
+        "      <td> True</td>\n",
+        "    </tr>\n",
+        "    <tr>\n",
+        "      <th>440 </th>\n",
+        "      <td> 10</td>\n",
+        "      <td> 730</td>\n",
+        "      <td> 36</td>\n",
+        "      <td>  6250.00</td>\n",
+        "      <td> 21000</td>\n",
+        "      <td> True</td>\n",
+        "    </tr>\n",
+        "    <tr>\n",
+        "      <th>521 </th>\n",
+        "      <td> 10</td>\n",
+        "      <td> 715</td>\n",
+        "      <td> 36</td>\n",
+        "      <td>  5000.00</td>\n",
+        "      <td> 12000</td>\n",
+        "      <td> True</td>\n",
+        "    </tr>\n",
+        "    <tr>\n",
+        "      <th>1017</th>\n",
+        "      <td> 10</td>\n",
+        "      <td> 735</td>\n",
+        "      <td> 60</td>\n",
+        "      <td>  4000.00</td>\n",
+        "      <td>  5000</td>\n",
+        "      <td> True</td>\n",
+        "    </tr>\n",
+        "  </tbody>\n",
+        "</table>\n",
+        "</div>"
+       ],
+       "output_type": "pyout",
+       "prompt_number": 11,
+       "text": [
+        "      Interest.Rate  FICO.Score  Loan.Length  Monthly.Income  Loan.Amount    TF\n",
+        "650              10         700           36         3250.00         2800  True\n",
+        "204              10         715           36        15416.67         6000  True\n",
+        "440              10         730           36         6250.00        21000  True\n",
+        "521              10         715           36         5000.00        12000  True\n",
+        "1017             10         735           60         4000.00         5000  True"
+       ]
+      }
+     ],
+     "prompt_number": 11
+    },
+    {
+     "cell_type": "markdown",
+     "metadata": {},
+     "source": [
+      "Now we use our Logistic Regression modeler software to create Logit model using this data, with the 'TF' column as the dependent (or response) variable and 'FICO.Score' and 'Loan.Amount' as independent (or predictor) variables.\n"
+     ]
+    },
+    {
+     "cell_type": "code",
+     "collapsed": false,
+     "input": [
+      "import statsmodels.api as sm\n",
+      "# statsmodels requires us to add a constant column representing the intercept\n",
+      "dfr['intercept']=1.0\n",
+      "# identify the independent variables \n",
+      "ind_cols=['FICO.Score','Loan.Amount','intercept']\n",
+      "logit = sm.Logit(dfr['TF'], dfr[ind_cols])\n",
+      "result=logit.fit()"
+     ],
+     "language": "python",
+     "metadata": {},
+     "outputs": [
+      {
+       "output_type": "stream",
+       "stream": "stdout",
+       "text": [
+        "Optimization terminated successfully.\n",
+        "         Current function value: 798.758166\n",
+        "         Iterations 8\n"
+       ]
+      }
+     ],
+     "prompt_number": 12
+    },
+    {
+     "cell_type": "markdown",
+     "metadata": {},
+     "source": [
+      "We should see some soothing messages from our software re-assuring us that all went well \n",
+      "and giving us some numbers we may not find useful right now.  \n",
+      "More importantly we want the results.\n",
+      "What are the fitted coefficients that the software has computed?"
+     ]
+    },
+    {
+     "cell_type": "code",
+     "collapsed": false,
+     "input": [
+      "# get the fitted coefficients from the results\n",
+      "coeff = result.params\n",
+      "print coeff"
+     ],
+     "language": "python",
+     "metadata": {},
+     "outputs": [
+      {
+       "output_type": "stream",
+       "stream": "stdout",
+       "text": [
+        "FICO.Score      0.087423\n",
+        "Loan.Amount    -0.000174\n",
+        "intercept     -60.125045\n",
+        "dtype: float64\n"
+       ]
+      }
+     ],
+     "prompt_number": 13
+    },
+    {
+     "cell_type": "markdown",
+     "metadata": {},
+     "source": [
+      "The numbers above are the coefficients for the respective independent, i.e. predictor, variables in the linear expression we saw in the Overview.  Except, we now have two instead of one predictor.  We have multivariate linear regression."
+     ]
+    },
+    {
+     "cell_type": "markdown",
+     "metadata": {},
+     "source": [
+      "So, using the above coefficients, the linear part of our predictor is  \n",
+      "\n",
+      "$$z = -60.125 + 0.087423*FicoScore -0.000174*LoanAmount$$"
+     ]
+    },
+    {
+     "cell_type": "markdown",
+     "metadata": {},
+     "source": [
+      "Finally, the probability of our desired outcome, ie our getting a loan at 12% interest or less, is\n",
+      "\n",
+      "$$p(z) = \\frac{1}{1 + e^{b_0 + b_1*FicoScore + b_2*LoanAmount}}$$  \n",
+      "\n",
+      "where  $b_0 = \u221260.125, b_1 = 0.087423$ and $b_2 = \u22120.000174$"
+     ]
+    },
+    {
+     "cell_type": "markdown",
+     "metadata": {},
+     "source": [
+      "We create a function in code that encapsulates all this.\n",
+      "\n",
+      "It takes as input, a borrowers FICO score, the desired loan amount and the coefficient vector from our model. It returns a probability of getting the loan, a number between 0 and 1."
+     ]
+    },
+    {
+     "cell_type": "code",
+     "collapsed": false,
+     "input": [
+      "def pz(fico,amt,coeff):\n",
+      "  # compute the linear expression by multipyling the inputs by their respective coefficients.\n",
+      "  # note that the coefficient array has the intercept coefficient at the end\n",
+      "  z = coeff[0]*fico + coeff[1]*amt + coeff[2]\n",
+      "  return 1/(1+exp(-1*z))"
+     ],
+     "language": "python",
+     "metadata": {},
+     "outputs": [],
+     "prompt_number": 14
+    },
+    {
+     "cell_type": "markdown",
+     "metadata": {},
+     "source": [
+      "Now we use our data FICO=720 and Loan Amount=10,000 to get a probability using the z value\n",
+      "and the logistic formula. "
+     ]
+    },
+    {
+     "cell_type": "code",
+     "collapsed": false,
+     "input": [
+      "pz(720,10000,coeff)"
+     ],
+     "language": "python",
+     "metadata": {},
+     "outputs": [
+      {
+       "output_type": "pyout",
+       "prompt_number": 15,
+       "text": [
+        "0.74637858895151077"
+       ]
+      }
+     ],
+     "prompt_number": 15
+    },
+    {
+     "cell_type": "markdown",
+     "metadata": {},
+     "source": [
+      "This value of 0.746 tells us we have a good chance of getting the loan we want, according to our criterion, where anything above 0.67 was considered a 'yes'."
+     ]
+    },
+    {
+     "cell_type": "markdown",
+     "metadata": {},
+     "source": [
+      "Now we are going to try (fico, amt) pairs as follows:\n",
+      "\n",
+      "* 720,20000\n",
+      "* 720,30000\n",
+      "* 820,10000\n",
+      "* 820,20000 \n",
+      "* 820,30000 "
+     ]
+    },
+    {
+     "cell_type": "code",
+     "collapsed": false,
+     "input": [
+      "print(\"Trying multiple FICO Loan Amount combinations: \")\n",
+      "print('----')\n",
+      "print(\"fico=720, amt=10,000\")\n",
+      "print(pz(720,10000,coeff))\n",
+      "print(\"fico=720, amt=20,000\")\n",
+      "print(pz(720,20000,coeff))\n",
+      "print(\"fico=720, amt=30,000\")\n",
+      "print(pz(720,30000,coeff))\n",
+      "print(\"fico=820, amt=10,000\")\n",
+      "print(pz(820,10000,coeff))\n",
+      "print(\"fico=820, amt=20,000\")\n",
+      "print(pz(820,20000,coeff))\n",
+      "print(\"fico=820, amt=30,000\")\n",
+      "print(pz(820,30000,coeff))\n"
+     ],
+     "language": "python",
+     "metadata": {},
+     "outputs": [
+      {
+       "output_type": "stream",
+       "stream": "stdout",
+       "text": [
+        "Trying multiple FICO Loan Amount combinations: \n",
+        "----\n",
+        "fico=720, amt=10,000\n",
+        "0.746378588952\n",
+        "fico=720, amt=20,000\n",
+        "0.340539857688\n",
+        "fico=720, amt=30,000\n",
+        "0.083083595237\n",
+        "fico=820, amt=10,000\n",
+        "0.999945742327\n",
+        "fico=820, amt=20,000\n",
+        "0.999690867752\n",
+        "fico=820, amt=30,000\n",
+        "0.998240830138\n"
+       ]
+      }
+     ],
+     "prompt_number": 16
+    },
+    {
+     "cell_type": "markdown",
+     "metadata": {},
+     "source": [
+      "We see as somewhat expected that the person with a 720 FICO Score will have decreasing probability of getting loans with higher amounts.\n",
+      "However, the person with the 820 FICO Score is very likely to get loans with those amounts, again as expected."
+     ]
+    },
+    {
+     "cell_type": "code",
+     "collapsed": false,
+     "input": [
+      "pz(820,63000,coeff)"
+     ],
+     "language": "python",
+     "metadata": {},
+     "outputs": [
+      {
+       "output_type": "pyout",
+       "prompt_number": 17,
+       "text": [
+        "0.64525116319288345"
+       ]
+      }
+     ],
+     "prompt_number": 17
+    },
+    {
+     "cell_type": "markdown",
+     "metadata": {},
+     "source": [
+      "<image src=\"files/images/example.png\" />"
+     ]
+    },
+    {
+     "cell_type": "markdown",
+     "metadata": {},
+     "source": [
+      "### Exercise\n",
+      "Try the following pairs of (fico, amt) values and plug them into the pz() function mimicing the syntax below.  What insight does this give you?\n",
+      "\n",
+      "\n",
+      "* 820,50000\n",
+      "* 820,60000\n",
+      "* 820,70000\n",
+      "* 820,63000\n",
+      "* 820,65000\n",
+      "\n",
+      "Place your cursor on the cell below.  Hit shift-enter to recreate the result.  \n",
+      "Then click Insert->Cell Below via the Insert menu dropdown.  This creates a new empty cell.\n",
+      "Now enter the pz() function with the next pair of values. Hit shift-enter.\n",
+      "Repeat this till the end of the list of values.\n",
+      "Answer the question above, if possible.\n",
+      "Then explore other pairs as you wish."
+     ]
+    },
+    {
+     "cell_type": "code",
+     "collapsed": false,
+     "input": [
+      "pz(820,50000,coeff)"
+     ],
+     "language": "python",
+     "metadata": {},
+     "outputs": [
+      {
+       "output_type": "pyout",
+       "prompt_number": 18,
+       "text": [
+        "0.94586368176054425"
+       ]
+      }
+     ],
+     "prompt_number": 18
+    },
+    {
+     "cell_type": "markdown",
+     "metadata": {},
+     "source": [
+      "### Challenge Exercise\n",
+      "\n",
+      "Use the supporting notebooks in the appendix to learn some plotting techniques and try to create a yes/no plot for loan amount on x-axis and probability of loan on the y-axis for a FICO score of 720.  Do the same for a fico score of 820.\n",
+      "\n",
+      "### Extra Challenge Exercise\n",
+      "\n",
+      "How would you create a plot that showed the probability of getting a loan as a function of _both_ FICO score and loan amount varying?  What tools would you need?\n"
+     ]
+    },
+    {
+     "cell_type": "markdown",
+     "metadata": {},
+     "source": [
+      "---"
+     ]
+    },
+    {
+     "cell_type": "markdown",
+     "metadata": {},
+     "source": [
+      "### Conclusion\n",
+      "\n",
+      "We see for the (720, 10000) case, a probability close to 0.7 which tells us that we have a good chance of getting the loan at a favorable interest rate.\n",
+      "Using our threshold of 0.67 we count this as a 'yes'.\n",
+      "\n",
+      "Using a Logistic Regression model, a desired Interest Rate of 12 per cent, we use dthe Lending Club dataset to compute a probability that we will get a 10,000 dollar loan with a FICO Score of 720.  Our result indicated with a strong degree of certainty that we would be able to procure a loan with these terms. \n",
+      "\n",
+      "When we try the multiple combinations we see the following: \n",
+      "\n",
+      "* With a FICO Score of 720 the chance of a 20,000 and 30,000 Loan is lower than 0.67 so we count that as a probable \"no\".\n",
+      "* For the same amounts the FICO=820 score corresponds to probabilities greater than 0.75 and we count that as a \"yes\".\n",
+      "* For the same FICO the probability goes down with increasing Loan Amount \n",
+      "* For the same Loan Amount, the lower FICO has a lower probability.  \n",
+      "* This is consistent with the signs of the coefficients for these variables in our model.   \n",
+      "\n",
+      "---\n"
+     ]
+    },
+    {
+     "cell_type": "code",
+     "collapsed": false,
+     "input": [
+      "from IPython.core.display import HTML\n",
+      "def css_styling():\n",
+      "    styles = open(\"../styles/custom.css\", \"r\").read()\n",
+      "    return HTML(styles)\n",
+      "css_styling()"
+     ],
+     "language": "python",
+     "metadata": {},
+     "outputs": [
+      {
+       "html": [
+        "<style>\n",
+        "    @font-face {\n",
+        "        font-family: \"Computer Modern\";\n",
+        "        src: url('http://mirrors.ctan.org/fonts/cm-unicode/fonts/otf/cmunss.otf');\n",
+        "    }\n",
+        "    div.cell{\n",
+        "        width:800px;\n",
+        "        margin-left:auto;\n",
+        "        margin-right:auto;\n",
+        "    }\n",
+        "    h1 {\n",
+        "        font-family: \"Charis SIL\", Palatino, serif;\n",
+        "    }\n",
+        "    h4{\n",
+        "        margin-top:12px;\n",
+        "        margin-bottom: 3px;\n",
+        "       }\n",
+        "    div.text_cell_render{\n",
+        "        font-family: Computer Modern, \"Helvetica Neue\", Arial, Helvetica, Geneva, sans-serif;\n",
+        "        line-height: 145%;\n",
+        "        font-size: 120%;\n",
+        "        width:800px;\n",
+        "        margin-left:auto;\n",
+        "        margin-right:auto;\n",
+        "    }\n",
+        "    .CodeMirror{\n",
+        "            font-family: \"Source Code Pro\", source-code-pro,Consolas, monospace;\n",
+        "    }\n",
+        "    .prompt{\n",
+        "        display: None;\n",
+        "    }\n",
+        "    .text_cell_render h5 {\n",
+        "        font-weight: 300;\n",
+        "        font-size: 16pt;\n",
+        "        color: #4057A1;\n",
+        "        font-style: italic;\n",
+        "        margin-bottom: .5em;\n",
+        "        margin-top: 0.5em;\n",
+        "        display: block;\n",
+        "    }\n",
+        "    \n",
+        "    .warning{\n",
+        "        color: rgb( 240, 20, 20 )\n",
+        "        }\n",
+        "</style>\n",
+        "<script>\n",
+        "    MathJax.Hub.Config({\n",
+        "                        TeX: {\n",
+        "                           extensions: [\"AMSmath.js\"]\n",
+        "                           },\n",
+        "                tex2jax: {\n",
+        "                    inlineMath: [ ['$','$'], [\"\\\\(\",\"\\\\)\"] ],\n",
+        "                    displayMath: [ ['$$','$$'], [\"\\\\[\",\"\\\\]\"] ]\n",
+        "                },\n",
+        "                displayAlign: 'center', // Change this to 'center' to center equations.\n",
+        "                \"HTML-CSS\": {\n",
+        "                    styles: {'.MathJax_Display': {\"margin\": 4}}\n",
+        "                }\n",
+        "        });\n",
+        "</script>"
+       ],
+       "output_type": "pyout",
+       "prompt_number": 19,
+       "text": [
+        "<IPython.core.display.HTML at 0x10c505210>"
+       ]
+      }
+     ],
+     "prompt_number": 19
+    }
+   ],
+   "metadata": {}
+  }
+ ]
+}

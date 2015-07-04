@@ -1,0 +1,453 @@
+{
+ "metadata": {
+  "name": "",
+  "signature": "sha256:9c8b646de619176e576316f54639c215c5ca49abba1f19a8ff589c344c59d21d"
+ },
+ "nbformat": 3,
+ "nbformat_minor": 0,
+ "worksheets": [
+  {
+   "cells": [
+    {
+     "cell_type": "markdown",
+     "metadata": {},
+     "source": [
+      "Linear Regression - Overview\n",
+      "==================================\n",
+      "***"
+     ]
+    },
+    {
+     "cell_type": "markdown",
+     "metadata": {},
+     "source": [
+      "### How can I make predictions about real-world quantities, like sales or life expectancy?\n"
+     ]
+    },
+    {
+     "cell_type": "markdown",
+     "metadata": {},
+     "source": [
+      "Most often in real world applications we need to understand how one variable is determined by a number of others.\n",
+      "\n",
+      "For example:\n",
+      "\n",
+      "* How does sales volume change with changes in price. How is this affected by changes in the weather?\n",
+      "\n",
+      "* How does the amount of a drug absorbed vary with dosage and with body weight of patient?  Does it depend on blood pressure?\n",
+      "\n",
+      "* How are the conversions on an ecommerce website affected by two different page titles in an A/B comparison? \n",
+      "\n",
+      "* How does the energy released by an earthquake vary with the depth of it's epicenter?\n",
+      "\n",
+      "* How is the interest rate charged on a loan affected by credit history and by loan amount?\n",
+      "\n",
+      "Answering questions like these, requires us to create a **model**. \n",
+      "\n",
+      "A model is a formula where one variable (response) varies depending on one or more independent variables (covariates). For the loan example, interest rate might depend on FICO score, state, loan amount, and loan duration amongst others.\n",
+      "\n",
+      "One of the simplest models we can create is a **Linear Model** where we start with the assumption that the dependent variable varies linearly with the independent variable(s).\n",
+      "\n",
+      "While this may appear simplistic, many real world problems can be modeled usefully in this way.  Often data that don't appear to have a linear relationship can be transformed using simple mappings so that they do now show a linear relationship.  This is very powerful and Linear Models, therefore, have wide applicability. \n",
+      "\n",
+      "They are one of the foundational tools of Data Science.\n",
+      "\n",
+      "Creating a Linear Model involves a technique known as **Linear Regression**.  It's a tool you've most probably already used without knowing that's what it was called.\n",
+      "\n",
+      "---\n",
+      "\n"
+     ]
+    },
+    {
+     "cell_type": "markdown",
+     "metadata": {},
+     "source": [
+      "#### Linear Regression in the high school physics lab"
+     ]
+    },
+    {
+     "cell_type": "markdown",
+     "metadata": {},
+     "source": [
+      "Remember a typical physics lab experiment from high school? We had some input X (say force) which gave some output Y (say acceleration).  \n",
+      "\n",
+      "You made a number of pairs of observations x, y and plotted them on graph paper."
+     ]
+    },
+    {
+     "cell_type": "markdown",
+     "metadata": {},
+     "source": [
+      "<image src=\"files/images/a1fig1_labexperiment.png\" />"
+     ]
+    },
+    {
+     "cell_type": "markdown",
+     "metadata": {},
+     "source": [
+      "Then you had to fit a straight line through the set of observations using a visual \"best fit\".  "
+     ]
+    },
+    {
+     "cell_type": "markdown",
+     "metadata": {},
+     "source": [
+      "<img src=\"images/a1fig2_labexperiment_withline.png\" />"
+     ]
+    },
+    {
+     "cell_type": "markdown",
+     "metadata": {},
+     "source": [
+      "And then you read off 'm' the slope,  and 'b', the y-intercept from the graph, hoping it was close to the expected answer. By drawing the \"best fit\" line you were, in effect, visually estimating m and b without knowing it.  \n",
+      "\n",
+      "You were doing informal Linear Regression. We're going to do this a little more formally. And then make it more sophisticated."
+     ]
+    },
+    {
+     "cell_type": "markdown",
+     "metadata": {},
+     "source": [
+      "### Now for a bit of math\n",
+      "\n",
+      "Let's start with the basics.\n",
+      "\n",
+      "Remember the equation for a straight line from high school? \n",
+      "\n",
+      "$$Y = mX + b$$\n",
+      "\n",
+      "where $m$ is the slope and $b$ is the y-intercept.\n",
+      "\n",
+      "Very briefly and simplistically, Linear Regression is a class of techniques for \n",
+      "\n",
+      "**_Fitting a straight line to a set of data points_**.  \n",
+      "\n",
+      "This could also be considered reverse engineering a formula from the data.\n",
+      "\n",
+      "We'll develop this idea starting from first principles and adding mathematical sophistication as we go along. But before that, you're probably curious what were the 'm' and 'b' values for this graph.  We use modeling software to generate this for us and we get:\n",
+      "\n",
+      "---\n"
+     ]
+    },
+    {
+     "cell_type": "markdown",
+     "metadata": {},
+     "source": [
+      "<img src=\"images/a1fig3_labexperiment_slopeintercept.png\" />"
+     ]
+    },
+    {
+     "cell_type": "markdown",
+     "metadata": {},
+     "source": [
+      "---"
+     ]
+    },
+    {
+     "cell_type": "markdown",
+     "metadata": {},
+     "source": [
+      "We see two numbers, \"Intercept\" and \"Slope\".\n",
+      "Independent of what software we use to do our linear regression for us, it will report these two numbers in one form or another.\n",
+      "The \"Intercept\" here is the \"b\" in our equation.\n",
+      "And the \"Slope\" is the slope of Y with respect to the independent variable.\n"
+     ]
+    },
+    {
+     "cell_type": "markdown",
+     "metadata": {},
+     "source": [
+      "To summarize, we have a dataset (the observations) and a model (our guess for a formula that fits the data) and we have to figure out the parameters of the model (the coefficients m and b in our best fit line) so that the model fits the data the \"best\". \n",
+      "We want to use our data to find coefficients for a formula so that the formula will fit the data the \"best\".  \n"
+     ]
+    },
+    {
+     "cell_type": "markdown",
+     "metadata": {},
+     "source": [
+      "As we continue, we'll actually run the modeling software and generate these numbers from real data.  Here we just saw pictures of the results."
+     ]
+    },
+    {
+     "cell_type": "markdown",
+     "metadata": {},
+     "source": [
+      "---"
+     ]
+    },
+    {
+     "cell_type": "markdown",
+     "metadata": {},
+     "source": [
+      "### Using the model for prediction \n",
+      "\n",
+      "Once you had your visual best fit line and had read off the m and b you probably said something to the effect: \n",
+      "\n",
+      "\"The data follows a linear equation of the form Y = mX + b where m (slope)=(somenumber) and b (y intercept)=(someothernumber)\"\n",
+      "\n",
+      "You may recall that the equation is not an exact representation because most probably your data points are not all in a perfectly straight line. So there is some error varying from one data point to the next data point. Your visual approach subjectively tried to minimize some intuitive \"total error\" over all the data.  \n",
+      "\n",
+      "What you did was intuitive \"Linear Regression\". You estimated m and b by the \"looks right to me\" algorithm.\n",
+      "We will start with this intuitive notion and rapidly bring some heavy machinery to bear that will allow us to solve pretty sophisticated problems.\n",
+      "\n",
+      "At this point your lab exercise may well ask you to approximate what Y will be when X is some number outside the range of your measurements.\n",
+      "Then you use the equation above where m and b are now actual numbers say 2.1 and 0.3 respectively i.e the equation is Y = 2.1X + 0.3\n",
+      "\n",
+      "This equation is your \"model\"\n",
+      "\n",
+      "And you plug in an X to get a Y.  \n",
+      "\n",
+      "This is where you are using your model to predict a value or, in other words, you are saying that I didn't use this value of X in my experiment and I don't have it in my data but I'd like to know what this value of X will map to on the Y axis.\n",
+      "\n",
+      "Based on my model Y = 2.1X + 0.3 if I had used this value in my experiment then I believe I would have got an output Y of approximately what the straight line suggests.  \n",
+      "\n",
+      "You also want to be able to say \"my error is expected to be (some number), so I believe the actual value will lie between Y-error and Y+error\".  \n",
+      "\n",
+      "When used like this we call the X variable the \"predictor\" as values of Y are **predicted** based one values of X, and the Y variable the \"response\"."
+     ]
+    },
+    {
+     "cell_type": "markdown",
+     "metadata": {},
+     "source": [
+      "But before we do that let's take another trip back to the physics lab and peek over at the neighboring lab group's plots.\n",
+      "We might see a different plot.\n",
+      "So which one is \"correct\"?  \n",
+      "\n"
+     ]
+    },
+    {
+     "cell_type": "markdown",
+     "metadata": {},
+     "source": [
+      "<image src=\"files/images/a1fig4_twolabexperiments.png\" />"
+     ]
+    },
+    {
+     "cell_type": "markdown",
+     "metadata": {},
+     "source": [
+      "### A notion of total error\n",
+      "\n",
+      "\n",
+      "Visually we can see that our plot (the first one) is the \"better\" one. But why?\n",
+      "Because intuitively we feel that the line is closer to the points in the first one.\n",
+      "So let's try to understand formally why that might be correct. Or not."
+     ]
+    },
+    {
+     "cell_type": "markdown",
+     "metadata": {},
+     "source": [
+      "Actually the graphs above were plotted by software that generated some points with random variation and then plotted a line through them.  \n",
+      "\n",
+      "What the software did was compute a function called a \"loss function\", a measure of error. Then, it \"tried out\" multiple straight lines until it found one that minimized the \"loss function\" value for that choice -- then it read off the Intercept and X-slope for that line.  \n",
+      "\n",
+      "Because this error estimation is an important part of our modeling we're going to take a more detailed look at it. "
+     ]
+    },
+    {
+     "cell_type": "markdown",
+     "metadata": {},
+     "source": [
+      "\n",
+      "\n",
+      "We want to create a simple formula for the error or difference between the value of Y given by our straight line, and the actual value of Y from our data set.  Unless our line happens to pass through a particular point, this error will be non-zero.  It may be positive or negative.  We take the square of this error (we can do other things like take the abs value, but here we take the square.....patience, all will be revealed) and then we add up such error terms for each data point to get the total error for this straight line and this data set.  \n",
+      "\n",
+      "**Important**: for a different set of samples of the **very same** experiment we will get a different data set and possibly a different staright line and so almost certainly a different total error.\n",
+      "\n",
+      "The squared error we used is a very commonly used form of the total error previously know as \"quadratic error\".   It also has the property that errors in the negative direction and positive direction are treated the same and this \"quadratic error\" or \"square error\" is always have a positive value.\n",
+      "\n",
+      "So for now we will use the \"squared error\" as our representation of error. [1]\n",
+      "\n",
+      "So Regression in general is any approach we might use to estimate the coefficients of a model using the data to estimate the coefficients by minimizing the \"squared error\".  Statistical software uses sophisticated numerical techniques using multivariable calculus to minimize this error and give us estimated values for the coefficients.\n"
+     ]
+    },
+    {
+     "cell_type": "markdown",
+     "metadata": {},
+     "source": [
+      "**Let's try this on some real data.**\n",
+      "\n",
+      "We're going to look at a data set of Loan data from [Lending Club](http://www.lendingclub.com), a peer lending web site.\n",
+      "They have anonymized data on borrowers and loans that have been made. Loan data has many attributes and we'll explore the whole data set in a bit but for now we'll just look at how borrower FICO score affects interest rate charged.\n"
+     ]
+    },
+    {
+     "cell_type": "code",
+     "collapsed": false,
+     "input": [
+      "import pandas as pd\n",
+      "# we have to clean up the raw data set which we will do\n",
+      "# in the next lesson. But for now let's look at the cleaned up data.\n",
+      "# import the cleaned up dataset into a pandas data frame\n",
+      "df = pd.read_csv('../datasets/loanf.csv')\n",
+      "\n",
+      "# extract FICO Score and Interest Rate and plot them\n",
+      "# FICO Score on x-axis, Interest Rate on y-axis\n",
+      "intrate = df['Interest.Rate']\n",
+      "fico = df['FICO.Score']\n",
+      "p = plot(fico,intrate,'o')\n",
+      "ax = gca()\n",
+      "xt = ax.set_xlabel('FICO Score')\n",
+      "yt = ax.set_ylabel('Interest Rate %')"
+     ],
+     "language": "python",
+     "metadata": {},
+     "outputs": [
+      {
+       "output_type": "stream",
+       "stream": "stdout",
+       "text": [
+        "cannot import name hashtable\n"
+       ]
+      },
+      {
+       "ename": "ImportError",
+       "evalue": "cannot import name hashtable",
+       "output_type": "pyerr",
+       "traceback": [
+        "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m\n\u001b[0;31mImportError\u001b[0m                               Traceback (most recent call last)",
+        "\u001b[0;32m<ipython-input-4-839b8ae744e1>\u001b[0m in \u001b[0;36m<module>\u001b[0;34m()\u001b[0m\n\u001b[0;32m----> 1\u001b[0;31m \u001b[0;32mimport\u001b[0m \u001b[0mpandas\u001b[0m \u001b[0;32mas\u001b[0m \u001b[0mpd\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m      2\u001b[0m \u001b[0;31m# we have to clean up the raw data set which we will do\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m      3\u001b[0m \u001b[0;31m# in the next lesson. But for now let's look at the cleaned up data.\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m      4\u001b[0m \u001b[0;31m# import the cleaned up dataset into a pandas data frame\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m      5\u001b[0m \u001b[0mdf\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mpd\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mread_csv\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m'../datasets/loanf.csv'\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+        "\u001b[0;32m/Users/nitin/anaconda/lib/python2.7/site-packages/pandas/__init__.py\u001b[0m in \u001b[0;36m<module>\u001b[0;34m()\u001b[0m\n\u001b[1;32m      4\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m      5\u001b[0m \u001b[0;32mtry\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m----> 6\u001b[0;31m     \u001b[0;32mfrom\u001b[0m \u001b[0;34m.\u001b[0m \u001b[0;32mimport\u001b[0m \u001b[0mhashtable\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mtslib\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mlib\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m      7\u001b[0m \u001b[0;32mexcept\u001b[0m \u001b[0mException\u001b[0m\u001b[0;34m:\u001b[0m  \u001b[0;31m# pragma: no cover\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m      8\u001b[0m     \u001b[0;32mimport\u001b[0m \u001b[0msys\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+        "\u001b[0;31mImportError\u001b[0m: cannot import name hashtable"
+       ]
+      }
+     ],
+     "prompt_number": 4
+    },
+    {
+     "cell_type": "markdown",
+     "metadata": {},
+     "source": [
+      "Here we see a distinct downward linear trend where Interest Rate goes down with increasing FICO score. But we also see that for the same FICO score there is a range of Interest rates.  This suggests that FICO by itself might not be enough to predict Interest Rate."
+     ]
+    },
+    {
+     "cell_type": "markdown",
+     "metadata": {},
+     "source": [
+      "### Multivariate Linear Regression\n",
+      "\n",
+      "So the natural question that arises is what happens if Y depends on more than one variable.\n",
+      "And this is where the power of mathematical generalization comes in.  The same principle applies but in multiple dimensions. Not just two or three but much larger numbers.  Twenty, thirty or even hundred independent variables are not out of question if we want to model real world data.  \n",
+      "\n",
+      "But for now let's look at $Y$ as a function of two independent variables, $X_1$ and $X_2$, so \n",
+      "\n",
+      "$$ Y = a_0 + a_1X_1 + a_2X_2 $$\n",
+      "\n",
+      "Here $a_0$ is the Intercept term and $a_1, a_2$ are the coefficients of $X_1, X_2$, the independent variables respectively.   \n",
+      "\n",
+      "So to look at a real data set with potentially multiple independent variables we're going to use the Lending Club data set in the next step."
+     ]
+    },
+    {
+     "cell_type": "markdown",
+     "metadata": {},
+     "source": [
+      "---\n",
+      "\n",
+      "## References\n",
+      "\n",
+      "[1] Squared Error <http://en.wikipedia.org/wiki/Residual_sum_of_squares>"
+     ]
+    },
+    {
+     "cell_type": "code",
+     "collapsed": false,
+     "input": [
+      "from IPython.core.display import HTML\n",
+      "def css_styling():\n",
+      "    styles = open(\"../styles/custom.css\", \"r\").read()\n",
+      "    return HTML(styles)\n",
+      "css_styling()\n"
+     ],
+     "language": "python",
+     "metadata": {},
+     "outputs": [
+      {
+       "html": [
+        "<style>\n",
+        "    @font-face {\n",
+        "        font-family: \"Computer Modern\";\n",
+        "        src: url('http://mirrors.ctan.org/fonts/cm-unicode/fonts/otf/cmunss.otf');\n",
+        "    }\n",
+        "    div.cell{\n",
+        "        width:800px;\n",
+        "        margin-left:auto;\n",
+        "        margin-right:auto;\n",
+        "    }\n",
+        "    h1 {\n",
+        "        font-family: \"Charis SIL\", Palatino, serif;\n",
+        "    }\n",
+        "    h4{\n",
+        "        margin-top:12px;\n",
+        "        margin-bottom: 3px;\n",
+        "       }\n",
+        "    div.text_cell_render{\n",
+        "        font-family: Computer Modern, \"Helvetica Neue\", Arial, Helvetica, Geneva, sans-serif;\n",
+        "        line-height: 145%;\n",
+        "        font-size: 120%;\n",
+        "        width:800px;\n",
+        "        margin-left:auto;\n",
+        "        margin-right:auto;\n",
+        "    }\n",
+        "    .CodeMirror{\n",
+        "            font-family: \"Source Code Pro\", source-code-pro,Consolas, monospace;\n",
+        "    }\n",
+        "    .prompt{\n",
+        "        display: None;\n",
+        "    }\n",
+        "    .text_cell_render h5 {\n",
+        "        font-weight: 300;\n",
+        "        font-size: 16pt;\n",
+        "        color: #4057A1;\n",
+        "        font-style: italic;\n",
+        "        margin-bottom: .5em;\n",
+        "        margin-top: 0.5em;\n",
+        "        display: block;\n",
+        "    }\n",
+        "    \n",
+        "    .warning{\n",
+        "        color: rgb( 240, 20, 20 )\n",
+        "        }\n",
+        "</style>\n",
+        "<script>\n",
+        "    MathJax.Hub.Config({\n",
+        "                        TeX: {\n",
+        "                           extensions: [\"AMSmath.js\"]\n",
+        "                           },\n",
+        "                tex2jax: {\n",
+        "                    inlineMath: [ ['$','$'], [\"\\\\(\",\"\\\\)\"] ],\n",
+        "                    displayMath: [ ['$$','$$'], [\"\\\\[\",\"\\\\]\"] ]\n",
+        "                },\n",
+        "                displayAlign: 'center', // Change this to 'center' to center equations.\n",
+        "                \"HTML-CSS\": {\n",
+        "                    styles: {'.MathJax_Display': {\"margin\": 4}}\n",
+        "                }\n",
+        "        });\n",
+        "</script>"
+       ],
+       "metadata": {},
+       "output_type": "pyout",
+       "prompt_number": 3,
+       "text": [
+        "<IPython.core.display.HTML at 0x1084b41d0>"
+       ]
+      }
+     ],
+     "prompt_number": 3
+    },
+    {
+     "cell_type": "code",
+     "collapsed": false,
+     "input": [],
+     "language": "python",
+     "metadata": {},
+     "outputs": []
+    }
+   ],
+   "metadata": {}
+  }
+ ]
+}
