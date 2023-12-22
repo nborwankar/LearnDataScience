@@ -29,7 +29,7 @@ Each of these have worksheets that contain mostly the code sections so you can i
 
 Three openly available data sets are used.  
 
-* For the Linear and Logistic Regression we use a data set on loans and interest rates provided by Learning Club http://learningclub.com  
+* For the Linear and Logistic Regression we use a data set on loans and interest rates provided by Lending Club http://lendingclub.com  
 * For Random Forests we use a data set of Android accelerometer and gyroscope readings used to predict body position and motion from the Human Activity Recognition project
 http://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones
 * UN data on economic indicators of countries
