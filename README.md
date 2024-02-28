@@ -134,12 +134,12 @@ One of the following distributions is needed. Please note that even if you have 
 * The following steps assume you have installed one of the distributions mentioned in prerequisites.
 
 * From a zip or tar file
-    * download the zip or tar file 
-    * unpack the file to a directory called learnds
-    * cd to the 'notebooks' subdirectory
-    * start IPython Notebook 'ipython notebook --pylab=inline'
+    * Download the zip or tar file 
+    * Unpack the file to a directory called learnds
+    * Cd to the 'notebooks' subdirectory
+    * Start IPython Notebook 'ipython notebook --pylab=inline'
  
 * From the git repo
-    * clone the repo
-    * cd to 'notebooks'
-    * start IPython Notebook 'ipython notebook --pylab=inline'
+    * Clone the repo
+    * Cd to 'notebooks'
+    * Start IPython Notebook 'ipython notebook --pylab=inline'
