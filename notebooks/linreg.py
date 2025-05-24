@@ -129,8 +129,8 @@ def linreg_example(x=None,y=None):
   
     plt.plot(x,y,'o')
     abline(intercept,gradient,'r',linewidth=1)
-    print "Intercept = %f" % (intercept)  
-    print "Slope = %f"% (gradient)
+    print("Intercept = %f" % (intercept))  
+    print("Slope = %f"% (gradient))
     
 
 def linreg_sm(x,y):
@@ -193,10 +193,10 @@ X = sm.add_constant(x)
 model = sm.OLS(y,X)
 f = model.fit()
 
-print 'Coefficients: ', f.params[0:2]
-print 'Intercept: ', f.params[2]
-print 'P-Values: ', f.pvalues
-print 'R-Squared: ', f.rsquared
+print('Coefficients: ', f.params[0:2])
+print('Intercept: ', f.params[2])
+print('P-Values: ', f.pvalues)
+print('R-Squared: ', f.rsquared)
 
 """
 

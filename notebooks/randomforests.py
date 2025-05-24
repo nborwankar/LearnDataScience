@@ -28,13 +28,13 @@ def errormeasures(orig, pred, activity):
   predtrue = []
   predfalse = []
   
-  for i in range(1,n+1):
-    if(orig[i] == act):
+  for i in range(n): # Use 0-based indexing for lists of length n
+    if(orig[i] == activity): # Use the 'activity' parameter
       origtrue.append(i)          
     else: 
       origfalse.append(i)          
 
-    if(pred[i] == act):
+    if(pred[i] == activity): # Use the 'activity' parameter
       predtrue.append(i)          
     else:
       predfalse.append(i)

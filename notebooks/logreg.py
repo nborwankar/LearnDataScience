@@ -51,4 +51,4 @@ def nfl_outcomes_with_line():
 
 def fz(fico,amt,coeff):
   z = coeff[0]+coeff[1]*fico+coeff[2]*amt
-  return 1/(1+exp(-1*z))
+  return 1/(1+np.exp(-1*z))

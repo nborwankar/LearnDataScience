@@ -9,14 +9,14 @@ import matplotlib.pyplot as plt
 
 
 def load_data(fName = '../datasets/UN4col.csv'):
-  fp = open(fName)
+  fp = open(fName, encoding='utf-8')
   XX = np.loadtxt(fp)
   fp.close()
   return XX
   
 
 def run_kmeans(X, n=10):
-  _K = range(1,n)
+  _K = list(range(1,n))
 
   # scipy.cluster.vq.kmeans
   _KM = [kmeans(X,k) for k in _K] # apply kmeans 1 to 10
